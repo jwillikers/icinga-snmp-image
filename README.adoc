@@ -1,0 +1,127 @@
+= Icinga Manubulon Image
+Jordan Williams <jordan@jwillikers.com>
+:experimental:
+:icons: font
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+:Asciidoctor_: https://asciidoctor.org/[Asciidoctor]
+:Buildah: https://buildah.io/[Buildah]
+:Icinga: https://icinga.com/[Icinga]
+:Icinga-2-Docker-Image: https://github.com/Icinga/docker-icinga2[Icinga 2 - Docker Image]
+:Manubulon-SNMP-Plugins: https://github.com/SteScho/manubulon-snmp[Manubulon SNMP Plugins]
+:Fedora: https://getfedora.org/[Fedora]
+:Fedora-Silverblue: https://silverblue.fedoraproject.org/[Fedora Silverblue]
+:fish: https://fishshell.com/[fish]
+:Git: https://git-scm.com/[Git]
+:Linux: https://www.linuxfoundation.org/[Linux]
+:Podman: https://podman.io/[Podman]
+:pre-commit: https://pre-commit.com/[pre-commit]
+:Python: https://www.python.org/[Python]
+:Rouge: https://rouge.jneen.net/[Rouge]
+
+image:https://github.com/jwillikers/icinga-manubulon-image/workflows/CI/badge.svg["Build Status", link="https://github.com/jwillikers/icinga-manubulon-image/actions?query=workflow%3ACI"]
+image:https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white[pre-commit, link=https://github.com/pre-commit/pre-commit]
+
+A container image based off of the official {Icinga-2-Docker-Image} which includes the {Manubulon-SNMP-plugins}.
+
+== Synopsis
+
+Image:: https://quay.io/repository/jwillikers/icinga-manubulon[quay.io/jwillikers/icinga-manubulon]
+
+Tags::
+* `latest`
+
+Supported architectures::
+* `amd64` _(x86_64)_
+* `arm64` _(aarch64)_
+
+Labels::
+`io.containers.autoupdate=registry`::: Enables automatic updates when using {Podman} and the _fully-qualified_ image name.
+
+Contains a patched version of `/usr/share/perl5/Net/SNMP/Security/USM.pm` to support newer versions of the SHA algorithms for authentication.
+
+== Quick Start
+
+Use this container image the same way as the {Icinga-2-Docker-Image}.
+It just contains the {Manubulon-SNMP-plugins} in addition to everything else in the official upstream image.
+An example Kubernetes YAML configuration for running this container is available in my https://github.com/jwillikers/home-lab-helm[Home Lab Helm project].
+
+== Build
+
+. Install the necessary dependencies.
++
+[,sh]
+----
+sudo dnf -y install fish git podman pre-commit
+----
+
+. Clone this repository.
++
+[,sh]
+----
+git -C ~/Projects clone git@github.com:jwillikers/icinga-manubulon-image.git
+----
+
+. Change into the project directory.
++
+[,sh]
+----
+cd ~/Projects/icinga-manubulon-image
+----
+
+. Install pre-commit's Git hooks.
++
+[,sh]
+----
+pre-commit install
+----
+
+. Build the `Containerfile`.
++
+[,sh]
+----
+podman build . -t icinga-manubulon-image
+----
+
+== Contributing
+
+Contributions in the form of issues, feedback, and even pull requests are welcome.
+Make sure to adhere to the project's link:CODE_OF_CONDUCT.adoc[Code of Conduct].
+
+== Open Source Software
+
+This project is built on the hard work of countless open source contributors.
+Several of these projects are enumerated below.
+
+* {Asciidoctor_}
+* {Buildah}
+* {Fedora}
+* {Fedora-Silverblue}
+* {fish}
+* {Git}
+* {Icinga}
+* {Linux}
+* {Manubulon-SNMP-Plugins}
+* {Podman}
+* {pre-commit}
+* {Python}
+* {Rouge}
+
+== Code of Conduct
+
+Refer to the project's link:CODE_OF_CONDUCT.adoc[Code of Conduct] for details.
+
+== License
+
+This repository is licensed under the https://www.gnu.org/licenses/gpl-3.0.html[GPLv3], a copy of which is provided in the link:LICENSE.adoc[license file].
+
+© 2023 Jordan Williams
+
+== Authors
+
+mailto:{email}[{author}]
