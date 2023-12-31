@@ -27,7 +27,7 @@ endif::[]
 image:https://github.com/jwillikers/icinga-manubulon-image/workflows/CI/badge.svg["Build Status", link="https://github.com/jwillikers/icinga-manubulon-image/actions?query=workflow%3ACI"]
 image:https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white[pre-commit, link=https://github.com/pre-commit/pre-commit]
 
-A container image based off of the official {Icinga-2-Docker-Image} which includes the {Manubulon-SNMP-plugins}.
+A container image based off of the official {Icinga-2-Docker-Image} which includes the {Manubulon-SNMP-plugins} and the https://github.com/alexander-naumov/openbsd_snmp3_check[OpenBSD SNMPv3 Check].
 
 == Synopsis
 
