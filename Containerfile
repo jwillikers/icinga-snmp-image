@@ -17,6 +17,7 @@ RUN apt-get update \
      # todo Use an exact commit instead of a tag here for reproducibility.
      # This is using the commit at tag v0.55.
      && curl --location --output /usr/lib/nagios/plugins/openbsd_snmp3.py \
-          https://raw.githubusercontent.com/alexander-naumov/openbsd_snmp3_check/1b766bdf10bb8175104d874a5bb73fb2e8d46f32/openbsd_snmp3.py
+          https://raw.githubusercontent.com/alexander-naumov/openbsd_snmp3_check/1b766bdf10bb8175104d874a5bb73fb2e8d46f32/openbsd_snmp3.py \
+     && chmod +x /usr/lib/nagios/plugins/openbsd_snmp3.py
 
 USER icinga
