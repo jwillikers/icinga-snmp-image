@@ -10,6 +10,7 @@ RUN apt-get update \
           libcrypt-rijndael-perl \
           libdigest-hmac-perl \
           libsnmp-dev \
+          nagios-snmp-plugins \
           netbase \
           unzip \
      && rm --force --recursive /var/lib/apt/lists/* \
