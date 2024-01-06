@@ -3,11 +3,15 @@ FROM docker.io/icinga/icinga2:latest
 USER root
 RUN apt-get update \
      && apt-get --no-install-recommends --yes install \
+          autoconf \
+          automake \
+          build-essential \
           libcrypt-des-perl \
           libcrypt-rijndael-perl \
           libdigest-hmac-perl \
-          nagios-snmp-plugins \
+          libsnmp-dev \
           netbase \
+          unzip \
      && rm --force --recursive /var/lib/apt/lists/* \
      # todo Verify against a known SHA here.
      && curl --location --output /usr/share/perl5/Net/SNMP/Security/USM.pm \
@@ -16,6 +20,33 @@ RUN apt-get update \
      # This is using the commit at tag v0.55.
      && curl --location --output /usr/lib/nagios/plugins/openbsd_snmp3.py \
           https://raw.githubusercontent.com/alexander-naumov/openbsd_snmp3_check/1b766bdf10bb8175104d874a5bb73fb2e8d46f32/openbsd_snmp3.py \
-     && chmod +x /usr/lib/nagios/plugins/openbsd_snmp3.py
+     && chmod +x /usr/lib/nagios/plugins/openbsd_snmp3.py \
+     && curl --location --output check_interfaces.tar.gz \
+          https://github.com/NETWAYS/check_interfaces/archive/refs/tags/v1.4.tar.gz \
+     && tar xf check_interfaces.tar.gz \
+     && rm check_interfaces.tar.gz \
+     && cd check_interfaces* \
+     && ./configure --libexecdir=/usr/lib/nagios/plugins \
+     && make \
+     && make install \
+     && cd .. \
+     && rm --force --recursive v1.4* \
+     && apt-get autoremove --purge --yes \
+          autoconf \
+          automake \
+          build-essential \
+          unzip
+     #
+     # todo Package interfacetable?
+     # It appears to install a PHP web page, so it probably needs integrated in icingaweb.
+     # && curl --location --output interfacetable_v3t.tar.gz \
+     #      https://github.com/Tontonitch/interfacetable_v3t/archive/refs/tags/v1.01.tar.gz \
+     # && tar xf interfacetable_v3t.tar.gz \
+     # && rm interfacetable_v3t.tar.gz \
+     # && interfacetable_v3t-*/configure \
+     #      --prefix=/usr \
+     #      --with-nagios-group=icinga \
+     #      --with-nagios-libexec=/usr/lib/nagios/plugins \
+     #      --with-nagios-user=icinga
 
 USER icinga
