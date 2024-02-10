@@ -23,7 +23,7 @@ RUN apt-get update \
           https://raw.githubusercontent.com/alexander-naumov/openbsd_snmp3_check/1b766bdf10bb8175104d874a5bb73fb2e8d46f32/openbsd_snmp3.py \
      && chmod +x /usr/lib/nagios/plugins/openbsd_snmp3.py \
      && curl --location --output check_interfaces.tar.gz \
-          https://github.com/NETWAYS/check_interfaces/archive/refs/tags/v1.4.tar.gz \
+          https://github.com/github/NETWAYS/check_interfaces/archive/a708e554d07efe1eba76c1c5b8f8a4366a4a8ca6.tar.gz \
      && tar xf check_interfaces.tar.gz \
      && rm check_interfaces.tar.gz \
      && cd check_interfaces* \
