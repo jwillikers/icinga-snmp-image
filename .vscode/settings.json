@@ -4,6 +4,7 @@
         "adoc",
         "argparse",
         "Asciidoctor",
+        "assumeyes",
         "autoupdate",
         "Buildah",
         "conflist",

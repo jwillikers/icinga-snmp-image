@@ -50,15 +50,15 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build the image with Podman
-        run: podman build . --arch ${{ matrix.arch }} --tag icinga-manubulon-${{ matrix.arch }}
+        run: podman build . --arch ${{ matrix.arch }} --tag icinga-snmp-${{ matrix.arch }}
 
       - name: Export the image
-        run: podman image save --format oci-archive -o icinga-manubulon-${{ matrix.arch }}.tar localhost/icinga-manubulon-${{ matrix.arch }}
+        run: podman image save --format oci-archive -o icinga-snmp-${{ matrix.arch }}.tar localhost/icinga-snmp-${{ matrix.arch }}
 
       - uses: actions/upload-artifact@v4
         with:
-          name: icinga-manubulon-${{ matrix.arch }}
-          path: icinga-manubulon-${{ matrix.arch }}.tar
+          name: icinga-snmp-${{ matrix.arch }}
+          path: icinga-snmp-${{ matrix.arch }}.tar
 
   # test:
   #   name: Test
@@ -81,13 +81,13 @@ jobs:
 
   #     - uses: actions/download-artifact@v4
   #       with:
-  #         name: icinga-manubulon-${{ matrix.arch }}
+  #         name: icinga-snmp-${{ matrix.arch }}
 
   #     - name: Load the image
-  #       run: podman image load -i icinga-manubulon-${{ matrix.arch }}.tar
+  #       run: podman image load -i icinga-snmp-${{ matrix.arch }}.tar
 
   #     - name: Test the container
-  #       run: ./test.fish --name icinga-manubulon-${{ matrix.arch }}
+  #       run: ./test.fish --name icinga-snmp-${{ matrix.arch }}
 
   publish:
     name: Publish
@@ -96,29 +96,29 @@ jobs:
     if: github.ref == 'refs/heads/main'
     steps:
       - name: Create a manifest
-        run: buildah manifest create icinga-manubulon:latest
+        run: buildah manifest create icinga-snmp:latest
 
       # aarch64
       - uses: actions/download-artifact@v4
         with:
-          name: icinga-manubulon-arm64
+          name: icinga-snmp-arm64
 
       - name: Load the aarch64 image
-        run: podman image load -i icinga-manubulon-arm64.tar
+        run: podman image load -i icinga-snmp-arm64.tar
 
       - name: Add the aarch64 image to the manifest
-        run: buildah manifest add icinga-manubulon:latest localhost/icinga-manubulon-arm64
+        run: buildah manifest add icinga-snmp:latest localhost/icinga-snmp-arm64
 
       # x86_64
       - uses: actions/download-artifact@v4
         with:
-          name: icinga-manubulon-amd64
+          name: icinga-snmp-amd64
 
       - name: Load the x86_64 image
-        run: podman image load -i icinga-manubulon-amd64.tar
+        run: podman image load -i icinga-snmp-amd64.tar
 
       - name: Add the x86_64 image to the manifest
-        run: buildah manifest add icinga-manubulon:latest localhost/icinga-manubulon-amd64
+        run: buildah manifest add icinga-snmp:latest localhost/icinga-snmp-amd64
 
       - name: Push latest manifest and images to quay.io
-        run: buildah manifest push --rm --all --creds jwillikers+publisher:${{ secrets.REGISTRY_PASSWORD }} icinga-manubulon:latest docker://quay.io/jwillikers/icinga-manubulon
+        run: buildah manifest push --rm --all --creds jwillikers+publisher:${{ secrets.REGISTRY_PASSWORD }} icinga-snmp:latest docker://quay.io/jwillikers/icinga-snmp
