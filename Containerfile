@@ -22,6 +22,22 @@ RUN apt-get update \
      && curl --location --output /usr/lib/nagios/plugins/openbsd_snmp3.py \
           https://raw.githubusercontent.com/alexander-naumov/openbsd_snmp3_check/1b766bdf10bb8175104d874a5bb73fb2e8d46f32/openbsd_snmp3.py \
      && chmod +x /usr/lib/nagios/plugins/openbsd_snmp3.py \
+     && curl --location --output autoconf.tar.xz https://ftp.gnu.org/gnu/autoconf/autoconf-2.72.tar.xz \
+     && tar xf autoconf.tar.xz \
+     && cd autoconf* \
+     && ./configure \
+     && make \
+     && make install \
+     && cd .. \
+     && rm --force --recursive autoconf* \
+     && curl --location --output automake.tar.xz https://ftp.gnu.org/gnu/automake/automake-1.16.5.tar.xz \
+     && tar xf automake.tar.xz \
+     && cd automake* \
+     && ./configure \
+     && make \
+     && make install \
+     && cd .. \
+     && rm --force --recursive automake* \
      && curl --location --output check_interfaces.tar.gz \
           https://github.com/NETWAYS/check_interfaces/archive/a708e554d07efe1eba76c1c5b8f8a4366a4a8ca6.tar.gz \
      && tar xf check_interfaces.tar.gz \

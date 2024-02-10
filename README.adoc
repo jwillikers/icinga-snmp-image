@@ -81,7 +81,7 @@ pre-commit install
 +
 [,sh]
 ----
-podman build . --tag icinga-snmp-image
+podman build . --tag icinga-snmp
 ----
 
 == Contributing
