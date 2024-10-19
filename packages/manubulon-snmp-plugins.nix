@@ -22,6 +22,7 @@ stdenv.mkDerivation rec {
     CryptDES
     CryptRijndael
     DigestHMAC
+    DigestSHA1
     GetoptLongDescriptive
     NetSNMP
     perl
