@@ -1,0 +1,85 @@
+name: Build
+"on":
+  pull_request:
+    paths:
+      - '**.nix'
+      - .github/workflows/build.yaml
+      - flake.lock
+  push:
+    branches:
+      - main
+    paths:
+      - '**.nix'
+      - .github/workflows/build.yaml
+      - flake.lock
+  schedule:
+    # Run at 04:10 on Sunday
+    - cron: "10 4 * * 0"
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        arch:
+          - aarch64
+          - x86_64
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - uses: DeterminateSystems/nix-installer-action@v14
+        with:
+          extra-conf: |
+            extra-platforms = aarch64-linux
+      - uses: DeterminateSystems/magic-nix-cache-action@v8
+      - name: Build the image
+        run: nix build '.#packages.${{ matrix.arch }}-linux.icinga-snmp-image'
+      - name: Export the image
+        run: ln --force --symbolic --relative "$(readlink result)" "icinga-snmp-${{ matrix.arch }}-linux.tar.zst"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: icinga-snmp-${{ matrix.arch }}-linux
+          path: icinga-snmp-${{ matrix.arch }}-linux.tar.zst
+
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Create a manifest
+        run: buildah manifest create icinga-snmp:latest
+
+      # aarch64
+      - uses: actions/download-artifact@v4
+        with:
+          name: icinga-snmp-aarch64-linux
+
+      - name: Load the aarch64 image
+        run: |
+          podman image load --input icinga-snmp-aarch64-linux.tar.zst
+
+      - name: Add the aarch64 image to the manifest
+        run: buildah manifest add icinga-snmp:latest localhost/icinga-snmp:aarch64-linux
+
+      # x86_64
+      - uses: actions/download-artifact@v4
+        with:
+          name: icinga-snmp-x86_64-linux
+
+      - name: Load the x86_64 image
+        run: podman image load --input icinga-snmp-x86_64-linux.tar.zst
+
+      - name: Add the x86_64 image to the manifest
+        run: buildah manifest add icinga-snmp:latest localhost/icinga-snmp:x86_64-linux
+
+      - name: Push latest manifest and images to quay.io
+        run: |
+          buildah manifest push \
+          --all \
+          --creds jwillikers+publisher:${{ secrets.REGISTRY_PASSWORD }} \
+          --rm \
+          icinga-snmp:latest \
+          docker://quay.io/jwillikers/icinga-snmp

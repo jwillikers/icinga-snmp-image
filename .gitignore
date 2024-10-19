@@ -1,0 +1,17 @@
+# Archives
+*.tar*
+
+# Asciidoctor
+*.html
+
+# direnv
+.direnv/
+
+# git-hooks.nix
+/.pre-commit-config.yaml
+
+# lychee
+.lycheecache
+
+# Nix
+result
