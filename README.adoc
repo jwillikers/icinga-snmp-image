@@ -19,8 +19,7 @@ endif::[]
 :Podman: https://podman.io/[Podman]
 :pre-commit: https://pre-commit.com/[pre-commit]
 
-image:https://github.com/jwillikers/icinga-snmp-image/workflows/CI/badge.svg["Build Status", link="https://github.com/jwillikers/icinga-snmp-image/actions?query=workflow%3ACI"]
-image:https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white[pre-commit, link=https://github.com/pre-commit/pre-commit]
+image:https://github.com/jwillikers/icinga-snmp-image/workflows/Build/badge.svg["Build Status", link="https://github.com/jwillikers/icinga-snmp-image/actions?query=workflow%3ABuild"]
 
 A container image based off of the official {Icinga-2-Docker-Image} which includes various SNMP plugins.
 These include the {Manubulon-SNMP-plugins}, the https://github.com/alexander-naumov/openbsd_snmp3_check[OpenBSD SNMPv3 Check], and the {check_interfaces} plugins.
@@ -49,39 +48,49 @@ An example Kubernetes YAML configuration for running this container is available
 
 == Build
 
-. Install the necessary dependencies.
+. Install an implementation of Nix, such as https://lix.systems[Lix] used here.
 +
 [,sh]
 ----
-sudo dnf --assumeyes install fish git podman pre-commit
+curl -sSf -L https://install.lix.systems/lix | sh -s -- install
 ----
 
 . Clone this repository.
 +
 [,sh]
 ----
-git -C ~/Projects clone git@github.com:jwillikers/icinga-snmp-image.git
+git clone git@github.com:jwillikers/icinga-snmp-image.git
 ----
 
 . Change into the project directory.
 +
 [,sh]
 ----
-cd ~/Projects/icinga-snmp-image
+cd icinga-snmp-image
 ----
 
-. Install pre-commit's Git hooks.
+. Install direnv for your system according to the https://direnv.net/docs/installation.html[direnv installation instructions].
 +
 [,sh]
 ----
-pre-commit install
+sudo rpm-ostree install direnv
+sudo systemctl reboot
 ----
 
-. Build the `Containerfile`.
+. Integrate direnv with your shell by following the instructions on the https://direnv.net/docs/hook.html[direnv Setup page].
+
+. Permit the direnv configuration in the repository.
 +
 [,sh]
 ----
-podman build . --tag icinga-snmp
+direnv allow
+----
+
+. Build the image.
++
+[,sh]
+----
+nix build '.#icinga-snmp-image'
 ----
 
 == Contributing
@@ -101,7 +110,6 @@ Several of these projects are enumerated below.
 * {Linux}
 * {Manubulon-SNMP-Plugins}
 * {Podman}
-* {pre-commit}
 
 == Code of Conduct
 

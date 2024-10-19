@@ -1,0 +1,12 @@
+{
+  "recommendations": [
+    "asciidoctor.asciidoctor-vscode",
+    "mkhl.direnv",
+    "editorconfig.editorconfig",
+    "github.vscode-github-actions",
+    "jnoortheen.nix-ide",
+    "ibecker.treefmt-vscode",
+    "nefrob.vscode-just-syntax",
+    "tekumara.typos-vscode"
+  ]
+}
