@@ -61,6 +61,10 @@
             cacert
             dumb-init
             fakeNss
+
+            # perlPackages.NetSNMP calls getprotobyname which requires the /etc/protocols file.
+            iana-etc
+
             icinga2
             icinga-container-entrypoint
             deterministic-uname
