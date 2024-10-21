@@ -38,28 +38,7 @@
             perl = super.perl.override (_oldPerl: {
               overrides = _pkgs: {
                 NetSNMP = super.perlPackages.NetSNMP.overrideAttrs (oldAttrs: {
-                  patches = (oldAttrs.patches or [ ]) ++ [
-                    (super.fetchpatch {
-                      url = "https://src.fedoraproject.org/rpms/perl-Net-SNMP/raw/6e1d3e8ff2b9bd38dab48301a9d8b5d81ef3b7fe/f/Net-SNMP-v6.0.1-Switch_from_Socket6_to_Socket.patch";
-                      hash = "sha256-AlzNUkAmNSRIIZXs8v5gdp8n7fMfKyqqgM4VDpO47Bs=";
-                    })
-                    (super.fetchpatch {
-                      url = "https://src.fedoraproject.org/rpms/perl-Net-SNMP/raw/6e1d3e8ff2b9bd38dab48301a9d8b5d81ef3b7fe/f/Net-SNMP-v6.0.1-Simple_rewrite_to_Digest-HMAC-helpers.patch";
-                      hash = "sha256-UFL1rz8HGsU1V+GypybBLvflzpAvh2DYNWjZbfjguvw=";
-                    })
-                    (super.fetchpatch {
-                      url = "https://src.fedoraproject.org/rpms/perl-Net-SNMP/raw/6e1d3e8ff2b9bd38dab48301a9d8b5d81ef3b7fe/f/Net-SNMP-v6.0.1-Split_usm.t_to_two_parts.patch";
-                      hash = "sha256-/tuPmpehUOnCsHgfSAXieQI3QZqEWr67mwohd7NVD2o=";
-                    })
-                    (super.fetchpatch {
-                      url = "https://src.fedoraproject.org/rpms/perl-Net-SNMP/raw/6e1d3e8ff2b9bd38dab48301a9d8b5d81ef3b7fe/f/Net-SNMP-v6.0.1-Add_tests_for_another_usm_scenarios.patch";
-                      hash = "sha256-HDRRJTZD+u/ZHgTIx1fVr4U/0DVH92ELfOMAgY++RQE=";
-                    })
-                    (super.fetchpatch {
-                      url = "https://src.fedoraproject.org/rpms/perl-Net-SNMP/raw/6e1d3e8ff2b9bd38dab48301a9d8b5d81ef3b7fe/f/Net-SNMP-v6.0.1-Rewrite_from_Digest-SHA1-to-Digest-SHA.patch";
-                      hash = "sha256-jFz5eehV8MHFdd3Wq5S9wWCDhUr5qk4wAJ1mDRJffzw=";
-                    })
-                  ];
+                  patches = (oldAttrs.patches or [ ]) ++ [ ./net-snmp-enable-newer-sha-algorithms.patch ];
                 });
               };
             });
@@ -186,7 +165,10 @@
             deadnix.enable = true;
             detect-private-keys.enable = true;
             editorconfig-checker.enable = true;
-            end-of-file-fixer.enable = true;
+            end-of-file-fixer = {
+              enable = true;
+              excludes = [ "\\.patch" ];
+            };
             fix-byte-order-marker.enable = true;
             # todo Broken for 24.05 branch
             # flake-checker.enable = true;
@@ -196,7 +178,10 @@
             # lychee.enable = true;
             mixed-line-endings.enable = true;
             nil.enable = true;
-            trim-trailing-whitespace.enable = true;
+            trim-trailing-whitespace = {
+              enable = true;
+              excludes = [ "\\.patch" ];
+            };
             yamllint.enable = true;
           };
         };
