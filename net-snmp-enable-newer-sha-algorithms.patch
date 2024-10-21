@@ -1,19 +1,19 @@
-diff --git a/lib/Net/SNMP/Security/USM.pm b/lib/Net/SNMP/Security/USM.pm
-index 4fb5742..da82212 100644
+Index: lib/Net/SNMP/Security/USM.pm
 --- a/lib/Net/SNMP/Security/USM.pm
 +++ b/lib/Net/SNMP/Security/USM.pm
-@@ -25,8 +25,9 @@ use Net::SNMP::Message qw(
+@@ -25,9 +25,10 @@ use Net::SNMP::Message qw(
  
  use Crypt::DES();
  use Digest::MD5();
 -use Digest::SHA1();
 -use Digest::HMAC();
-+
+ 
 +use Digest::SHA qw( hmac_sha1 hmac_sha224 hmac_sha256 hmac_sha384 hmac_sha512 );
 +use Digest::HMAC_MD5 qw ( hmac_md5 );
- 
++
  ## Version of the Net::SNMP::Security::USM module
  
+ our $VERSION = v4.0.1;
 @@ -40,7 +41,9 @@ our @EXPORT_OK;
  
  our %EXPORT_TAGS = (
@@ -130,9 +130,10 @@ index 4fb5742..da82212 100644
 -         Digest::HMAC->new($this->{_auth_key}, 'Digest::SHA1');
 +      $this->{_auth_data} = \&hmac_sha1;
 +      $this->{_auth_maclen} = 12;
-+
+ 
+-   } else {
 +   } elsif ($this->{_auth_protocol} eq AUTH_PROTOCOL_HMACSHA224) {
-+
+ 
 +      $this->{_auth_data} = \&hmac_sha224;
 +      $this->{_auth_maclen} = 16;
 +
@@ -150,9 +151,8 @@ index 4fb5742..da82212 100644
 +
 +      $this->{_auth_data} = \&hmac_sha512;
 +      $this->{_auth_maclen} = 48;
- 
-    } else {
--
++
++   } else {
        return $this->_error(
           'The authProtocol "%s" is unknown', $this->{_auth_protocol}
        );
@@ -196,3 +196,4 @@ index 4fb5742..da82212 100644
  
     # Create the initial digest using the password
  
+
