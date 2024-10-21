@@ -3,6 +3,7 @@ name: Build
   pull_request:
     paths:
       - '**.nix'
+      - '**.patch'
       - .github/workflows/build.yaml
       - flake.lock
   push:
@@ -10,6 +11,7 @@ name: Build
       - main
     paths:
       - '**.nix'
+      - '**.patch'
       - .github/workflows/build.yaml
       - flake.lock
   schedule:

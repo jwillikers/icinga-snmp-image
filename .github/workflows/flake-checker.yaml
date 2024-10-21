@@ -4,12 +4,14 @@ name: Check Nix Flake
     branches: ["main"]
     paths:
       - '**.nix'
+      - '**.patch'
       - .github/workflows/flake-checker.yaml
       - flake.lock
   push:
     branches: ["main"]
     paths:
       - '**.nix'
+      - '**.patch'
       - .github/workflows/flake-checker.yaml
       - flake.lock
 
