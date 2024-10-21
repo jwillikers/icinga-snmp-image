@@ -31,6 +31,40 @@
               extraGroupLines = [ "icinga2:x:${icinga_group}:" ];
             });
           })
+          # Apply Fedora's patches to the Perl Net-SNMP package.
+          # https://src.fedoraproject.org/rpms/perl-Net-SNMP/tree/rawhide
+          # todo Upstream these patches.
+          (_self: super: rec {
+            perl = super.perl.override (_oldPerl: {
+              overrides = _pkgs: {
+                NetSNMP = super.perlPackages.NetSNMP.overrideAttrs (oldAttrs: {
+                  patches = (oldAttrs.patches or [ ]) ++ [
+                    (super.fetchpatch {
+                      url = "https://src.fedoraproject.org/rpms/perl-Net-SNMP/raw/6e1d3e8ff2b9bd38dab48301a9d8b5d81ef3b7fe/f/Net-SNMP-v6.0.1-Switch_from_Socket6_to_Socket.patch";
+                      hash = "sha256-AlzNUkAmNSRIIZXs8v5gdp8n7fMfKyqqgM4VDpO47Bs=";
+                    })
+                    (super.fetchpatch {
+                      url = "https://src.fedoraproject.org/rpms/perl-Net-SNMP/raw/6e1d3e8ff2b9bd38dab48301a9d8b5d81ef3b7fe/f/Net-SNMP-v6.0.1-Simple_rewrite_to_Digest-HMAC-helpers.patch";
+                      hash = "sha256-UFL1rz8HGsU1V+GypybBLvflzpAvh2DYNWjZbfjguvw=";
+                    })
+                    (super.fetchpatch {
+                      url = "https://src.fedoraproject.org/rpms/perl-Net-SNMP/raw/6e1d3e8ff2b9bd38dab48301a9d8b5d81ef3b7fe/f/Net-SNMP-v6.0.1-Split_usm.t_to_two_parts.patch";
+                      hash = "sha256-/tuPmpehUOnCsHgfSAXieQI3QZqEWr67mwohd7NVD2o=";
+                    })
+                    (super.fetchpatch {
+                      url = "https://src.fedoraproject.org/rpms/perl-Net-SNMP/raw/6e1d3e8ff2b9bd38dab48301a9d8b5d81ef3b7fe/f/Net-SNMP-v6.0.1-Add_tests_for_another_usm_scenarios.patch";
+                      hash = "sha256-HDRRJTZD+u/ZHgTIx1fVr4U/0DVH92ELfOMAgY++RQE=";
+                    })
+                    (super.fetchpatch {
+                      url = "https://src.fedoraproject.org/rpms/perl-Net-SNMP/raw/6e1d3e8ff2b9bd38dab48301a9d8b5d81ef3b7fe/f/Net-SNMP-v6.0.1-Rewrite_from_Digest-SHA1-to-Digest-SHA.patch";
+                      hash = "sha256-jFz5eehV8MHFdd3Wq5S9wWCDhUr5qk4wAJ1mDRJffzw=";
+                    })
+                  ];
+                });
+              };
+            });
+            perlPackages = perl.pkgs;
+          })
         ];
         pkgs = import nixpkgs { inherit system overlays; };
         icinga_group = "5665";
