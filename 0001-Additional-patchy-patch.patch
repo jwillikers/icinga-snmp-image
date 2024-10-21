@@ -1,18 +1,18 @@
-From 3fa8764efdf04bd3bdff1bd9375ed516ef0dd84d Mon Sep 17 00:00:00 2001
+From d3add9c6f28fe0bb4f5f438f17a521dcd57182fc Mon Sep 17 00:00:00 2001
 From: Jordan Williams <jordan@jwillikers.com>
 Date: Mon, 21 Oct 2024 11:55:17 -0500
 Subject: [PATCH] Additional patchy patch
 
 ---
- Build.PL        |   5 +-
+ Build.PL        |   7 +-
  META.yml        |   1 +
- Makefile.PL     |   4 +-
+ Makefile.PL     |   6 +-
  README          |  45 ++--
  lib/Net/SNMP.pm | 632 ++++++++++++++++++++++++------------------------
- 5 files changed, 344 insertions(+), 343 deletions(-)
+ 5 files changed, 346 insertions(+), 345 deletions(-)
 
 diff --git a/Build.PL b/Build.PL
-index 71d216e..230a1be 100644
+index 71d216e..b77317e 100644
 --- a/Build.PL
 +++ b/Build.PL
 @@ -37,10 +37,11 @@ Module::Build->new(
@@ -21,9 +21,10 @@ index 71d216e..230a1be 100644
        Digest::MD5     => '2.11',  # SNMPv3
 +      Digest::SHA    => 0,  # SNMPv3
        Digest::SHA1    => '1.02',  # SNMPv3
-       Digest::HMAC    => '1.00',  # SNMPv3
+-      Digest::HMAC    => '1.00',  # SNMPv3
 -      Crypt::Rijndael => '1.02',  # SNMPv3 - AES Cipher Algorithm 
 -      Socket6         => '0.23',  # UDP/IPv6 or TCP/IPv6 Transport Domain 
++      Digest::HMAC_MD5    => '1.01',  # SNMPv3
 +      Crypt::Rijndael => '1.02',  # SNMPv3 - AES Cipher Algorithm
 +      Socket6         => '0.23',  # UDP/IPv6 or TCP/IPv6 Transport Domain
     },
@@ -42,7 +43,7 @@ index f260431..a1abe6f 100644
    Socket6: 0.23
  requires:
 diff --git a/Makefile.PL b/Makefile.PL
-index 4678c32..96fce91 100644
+index 4678c32..2a1dba8 100644
 --- a/Makefile.PL
 +++ b/Makefile.PL
 @@ -15,7 +15,7 @@
@@ -54,14 +55,17 @@ index 4678c32..96fce91 100644
   in versions of Perl earlier than v5.6.0.
  
   Unable to install Net::SNMP with the current version of Perl.
-@@ -40,6 +40,7 @@ WriteMakefile(
+@@ -40,8 +40,9 @@ WriteMakefile(
        Math::BigInt => 0,
        Crypt::DES   => '2.03',  # SNMPv3
        Digest::MD5  => '2.11',  # SNMPv3
 +      Digest::SHA => 0,  # SNMPv3
        Digest::SHA1 => '1.02',  # SNMPv3
-       Digest::HMAC => '1.00',  # SNMPv3
+-      Digest::HMAC => '1.00',  # SNMPv3
++      Digest::HMAC_MD5 => '1.01',  # SNMPv3
     },
+    dist          => {
+       CI           => 'ci -u -sRel -m\"Changes for $(VERSION)\"',
 @@ -55,4 +56,3 @@ WriteMakefile(
  exit 0;
  
