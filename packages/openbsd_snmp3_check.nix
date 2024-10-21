@@ -10,6 +10,7 @@
 stdenv.mkDerivation rec {
   pname = "openbsd_snmp3_check";
   version = "0.55";
+
   src = fetchFromGitHub {
     owner = "alexander-naumov";
     repo = "openbsd_snmp3_check";
@@ -38,7 +39,7 @@ stdenv.mkDerivation rec {
     description = "SNMP v3 check for OpenBSD systems state monitoring";
     homepage = "https://github.com/alexander-naumov/openbsd_snmp3_check";
     license = with licenses; [ bsd3 ];
-    platforms = with platforms; unix;
+    platforms = platforms.unix;
     maintainers = with maintainers; [ jwillikers ];
     mainProgram = "openbsd_snmp3.py";
   };

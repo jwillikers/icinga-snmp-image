@@ -11,6 +11,7 @@
 stdenv.mkDerivation rec {
   pname = "manubulon-snmp-plugins";
   version = "2.1.0";
+
   src = fetchFromGitHub {
     owner = "SteScho";
     repo = "manubulon-snmp";
@@ -58,7 +59,7 @@ stdenv.mkDerivation rec {
     description = "Set of Icinga/Nagios plugins to check hosts and hardware with the SNMP protocol";
     homepage = "https://github.com/SteScho/manubulon-snmp";
     license = with licenses; [ gpl2Only ];
-    platforms = with platforms; unix;
+    platforms = platforms.unix;
     maintainers = with maintainers; [ jwillikers ];
   };
 }
