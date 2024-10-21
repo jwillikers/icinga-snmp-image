@@ -38,7 +38,10 @@
             perl = super.perl.override (_oldPerl: {
               overrides = _pkgs: {
                 NetSNMP = super.perlPackages.NetSNMP.overrideAttrs (oldAttrs: {
-                  patches = (oldAttrs.patches or [ ]) ++ [ ./net-snmp-enable-newer-sha-algorithms.patch ];
+                  patches = (oldAttrs.patches or [ ]) ++ [
+                    ./net-snmp-enable-newer-sha-algorithms.patch
+                    ./0001-Additional-patchy-patch.patch
+                  ];
                 });
               };
             });
