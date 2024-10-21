@@ -26,6 +26,7 @@ run attribute="icinga-snmp-image": (build attribute)
         --cap-add NET_RAW \
         --env ICINGA_MASTER=1 \
         --interactive \
+        --name icinga \
         --rm \
         --tty \
         "localhost/icinga-snmp:{{ arch() }}-linux"

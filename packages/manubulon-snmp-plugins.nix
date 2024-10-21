@@ -1,7 +1,9 @@
 {
   fetchDebianPatch,
   fetchFromGitHub,
+  iana-etc,
   lib,
+  libredirect,
   makeWrapper,
   # manubulon-snmp-plugins,
   # nix-update-script,
@@ -155,6 +157,7 @@ stdenv.mkDerivation rec {
     DigestHMAC
     DigestSHA1
     GetoptLongDescriptive
+    iana-etc
     NetSNMP
     perl
   ];
@@ -170,7 +173,11 @@ stdenv.mkDerivation rec {
 
   postFixup = ''
     for f in $out/bin/* ; do
-      wrapProgram $f --set PERL5LIB $PERL5LIB --set LC_ALL C
+      wrapProgram $f \
+        --set PERL5LIB $PERL5LIB \
+        --set LC_ALL C \
+        --set NIX_REDIRECTS '/etc/protocols=${iana-etc}/etc/protocols' \
+        --set LD_PRELOAD ${libredirect}/lib/libredirect.so
     done
   '';
 
