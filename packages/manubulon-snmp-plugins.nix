@@ -179,6 +179,6 @@ stdenv.mkDerivation rec {
     homepage = "https://github.com/SteScho/manubulon-snmp";
     license = with licenses; [ gpl2Only ];
     platforms = platforms.unix;
-    maintainers = with maintainers; [ jwillikers ];
+    # maintainers = with maintainers; [ jwillikers ];
   };
 }

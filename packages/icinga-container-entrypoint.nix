@@ -1,15 +1,12 @@
 { buildGoModule, fetchFromGitHub }:
 buildGoModule rec {
   pname = "icinga-container-entrypoint";
-  version = "0.1.0";
+  version = "master";
 
   src = fetchFromGitHub {
     owner = "Icinga";
     repo = "docker-icinga2";
     rev = "031401768d8fbaa1f42081a774d70d9f5d172a3c";
-    # nix shell 'nixpkgs#nix-prefetch-git' --command nix-prefetch-git --quiet https://github.com/Icinga/docker-icinga2.git 031401768d8fbaa1f42081a774d70d9f5d172a3c | awk -F ' ' '/sha256-/ {gsub(/"/, "", $2); gsub(/,/, "", $2); print $2; exit;}'
-    # todo Can I use nix-prefetch-url to use the existing src attribute?
-    # nix shell 'nixpkgs#nix-prefetch-url' --command nix-prefetch-url '<nixpkgs>' -A icinga-container-entrypoint.src
     sha256 = "sha256-bFEbTWDyJnzBn0T8vfEqlMumZi0gVpYj3jBzUs8gGJo=";
   };
   patches = [

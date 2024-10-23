@@ -30,7 +30,7 @@ stdenv.mkDerivation rec {
     homepage = "https://github.com/alexander-naumov/openbsd_snmp3_check";
     license = with licenses; [ bsd3 ];
     platforms = platforms.unix;
-    maintainers = with maintainers; [ jwillikers ];
+    # maintainers = with maintainers; [ jwillikers ];
     mainProgram = "openbsd_snmp3.py";
   };
 }

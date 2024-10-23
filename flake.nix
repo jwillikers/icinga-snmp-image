@@ -128,6 +128,23 @@
         apps = {
           inherit (nix-update-scripts.apps.${system}) update-nix-direnv;
           inherit (nix-update-scripts.apps.${system}) update-nixos-release;
+          update-packages =
+            let
+              script = pkgs.writeShellApplication {
+                name = "update-packages";
+                text = ''
+                  set -eou pipefail
+                  ${pkgs.nix-update}/bin/nix-update check_interfaces --build --flake --format
+                  ${pkgs.nix-update}/bin/nix-update icinga-container-entrypoint --build --flake --format --version master
+                  ${pkgs.nix-update}/bin/nix-update manubulon-snmp-plugins --build --flake --format
+                  ${pkgs.nix-update}/bin/nix-update openbsd_snmp3_check --build --flake --format
+                '';
+              };
+            in
+            {
+              type = "app";
+              program = "${script}/bin/update-packages";
+            };
         };
         devShells.default = mkShell {
           inherit (pre-commit) shellHook;
