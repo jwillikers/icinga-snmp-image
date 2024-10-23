@@ -48,10 +48,10 @@
         pkgs = import nixpkgs { inherit system overlays; };
         icinga_group = "5665";
         icinga_user = "5665";
-        check_interfaces = pkgs.callPackage ./packages/check_interfaces.nix { };
-        icinga-container-entrypoint = pkgs.callPackage ./packages/icinga-container-entrypoint.nix { };
-        manubulon-snmp-plugins = pkgs.callPackage ./packages/manubulon-snmp-plugins.nix { };
-        openbsd_snmp3_check = pkgs.callPackage ./packages/openbsd_snmp3_check.nix { };
+        check_interfaces = pkgs.callPackage ./pkgs/check_interfaces.nix { };
+        icinga-container-entrypoint = pkgs.callPackage ./pkgs/icinga-container-entrypoint.nix { };
+        manubulon-snmp-plugins = pkgs.callPackage ./pkgs/manubulon-snmp-plugins.nix { };
+        openbsd_snmp3_check = pkgs.callPackage ./pkgs/openbsd_snmp3_check.nix { };
         icinga-snmp-image = pkgs.dockerTools.buildLayeredImage {
           name = "localhost/icinga-snmp";
           tag = "${system}";
