@@ -1,11 +1,8 @@
 {
   fetchFromGitHub,
   lib,
-  # nix-update-script,
-  # openbsd_snmp3_check,
   python3,
   stdenv,
-# testers,
 }:
 stdenv.mkDerivation rec {
   pname = "openbsd_snmp3_check";
@@ -26,13 +23,6 @@ stdenv.mkDerivation rec {
     install --mode=0755 openbsd_snmp3.py $out/bin
     runHook postInstall
   '';
-
-  # passthru = {
-  #   updateScript = nix-update-script { };
-  #   tests.version = testers.testVersion {
-  #     package = openbsd_snmp3_check;
-  #   };
-  # };
 
   meta = with lib; {
     changelog = "https://github.com/alexander-naumov/openbsd_snmp3_check/releases/tag/v${version}";

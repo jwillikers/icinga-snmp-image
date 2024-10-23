@@ -3,11 +3,8 @@
   fetchFromGitHub,
   lib,
   makeWrapper,
-  # manubulon-snmp-plugins,
-  # nix-update-script,
   perlPackages,
   stdenv,
-# testers,
 }:
 stdenv.mkDerivation rec {
   pname = "manubulon-snmp-plugins";
@@ -175,16 +172,6 @@ stdenv.mkDerivation rec {
         --set LC_ALL C
     done
   '';
-
-  # passthru = {
-  #   updateScript = nix-update-script { };
-  #   tests.version = testers.testVersion {
-  #     package = manubulon-snmp-plugins;
-  #     # Program returns status code 3
-  #     command = "check_snmp_int.pl --version || true";
-  #     version = "check_snmp_int version : ${version}";
-  #   };
-  # };
 
   meta = with lib; {
     changelog = "https://github.com/SteScho/manubulon-snmp/releases/tag/v${version}";

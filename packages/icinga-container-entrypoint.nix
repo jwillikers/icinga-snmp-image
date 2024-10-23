@@ -20,7 +20,6 @@ buildGoModule rec {
   ];
   sourceRoot = "${src.name}/entrypoint";
 
-  # nix shell 'nixpkgs#nix-prefetch' --command nix-prefetch -E "{ sha256 }: ((import ./. { }).icinga-container-entrypoint.overrideAttrs { vendorHash = sha256; }).goModules"
   vendorHash = "sha256-Trqxo8UNfZf5wrfHfIko4vLG/GmgsEXLBMk4NlzL3vM=";
 
   meta = {
