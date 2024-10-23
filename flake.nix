@@ -26,9 +26,9 @@
           (_final: prev: {
             fakeNss = prev.fakeNss.override (_old: {
               extraPasswdLines = [
-                "icinga2:x:${icinga_user}:${icinga_group}:icinga2:/var/lib/icinga2:/sbin/nologin"
+                "icinga2:x:${icingaUser}:${icingaGroup}:icinga2:/var/lib/icinga2:/sbin/nologin"
               ];
-              extraGroupLines = [ "icinga2:x:${icinga_group}:" ];
+              extraGroupLines = [ "icinga2:x:${icingaGroup}:" ];
             });
           })
           # Apply Fedora's patches to the Perl Net-SNMP package.
@@ -46,88 +46,21 @@
           })
         ];
         pkgs = import nixpkgs { inherit system overlays; };
-        icinga_group = "5665";
-        icinga_user = "5665";
+        icingaGroup = "5665";
+        icingaUser = "5665";
         check_interfaces = pkgs.callPackage ./packages/check_interfaces.nix { };
         icinga-container-entrypoint = pkgs.callPackage ./packages/icinga-container-entrypoint.nix { };
         manubulon-snmp-plugins = pkgs.callPackage ./packages/manubulon-snmp-plugins.nix { };
         openbsd_snmp3_check = pkgs.callPackage ./packages/openbsd_snmp3_check.nix { };
-        icinga-snmp-image = pkgs.dockerTools.buildLayeredImage {
-          name = "localhost/icinga-snmp";
-          tag = "${system}";
-          compressor = "zstd";
-
-          contents = with pkgs; [
-            cacert
-            dumb-init
-            fakeNss
-
-            # perlPackages.NetSNMP calls getprotobyname which requires the /etc/protocols file.
-            iana-etc
-
-            icinga2
-            icinga-container-entrypoint
-            deterministic-uname
-
-            # Plugins:
+        icinga-snmp-image = pkgs.callPackage ./packages/icinga-snmp-image.nix {
+          inherit
             check_interfaces
+            icinga-container-entrypoint
+            icingaUser
+            icingaGroup
             manubulon-snmp-plugins
             openbsd_snmp3_check
-            monitoring-plugins
-          ];
-
-          extraCommands = ''
-            set -eou pipefail
-            # Create the /run and /var directories that are expected.
-            mkdir --parents run var/cache var/lib var/log var/spool
-            ln --symbolic --verbose /run var/run
-          '';
-
-          fakeRootCommands = ''
-            set -eou pipefail
-
-            # Create the /data and /data-init directories.
-            # install --group ${icinga_group} --owner ${icinga_user} --directory data
-            install --group ${icinga_group} --owner ${icinga_user} --directory data
-            install --group ${icinga_group} --owner ${icinga_user} --directory data-init
-            install --group ${icinga_group} --owner ${icinga_user} --directory data-init/etc
-
-            # Copy Icinga's configuration under /data-init/etc and make /etc/icinga2 a symlink to /data/etc/icinga2.
-            cp --recursive ${pkgs.icinga2}/etc/icinga2 data-init/etc/
-            chown --recursive ${icinga_user}:${icinga_group} data-init/etc/icinga2
-            find data-init/etc/icinga2 -type d -exec chmod 0755 {} \;
-            find data-init/etc/icinga2 -type f -exec chmod 0644 {} \;
-            rm --force --recursive etc/icinga2
-            ln --symbolic --verbose /data/etc/icinga2 etc/icinga2
-
-            # Create the /var subdirectories Icinga expects.
-            install --group ${icinga_group} --owner ${icinga_user} --directory \
-              data-init/var/cache/icinga2 \
-              data-init/var/cache/icinga2 \
-              data-init/var/lib/icinga2 \
-              data-init/var/log/icinga2 \
-              data-init/var/run/icinga2 \
-              data-init/var/spool/icinga2
-            ln --symbolic --verbose /data/var/cache/icinga2 var/cache/icinga2
-            ln --symbolic --verbose /data/var/lib/icinga2 var/lib/icinga2
-            ln --symbolic --verbose /data/var/log/icinga2 var/log/icinga2
-            ln --symbolic --verbose /data/var/run/icinga2 run/icinga2
-            ln --symbolic --verbose /data/var/spool/icinga2 var/spool/icinga2
-          '';
-
-          # /usr/lib/nagios/plugins
-
-          config = {
-            Cmd = [
-              "${pkgs.icinga2}/bin/icinga2"
-              "daemon"
-            ];
-            Entrypoint = [ "${icinga-container-entrypoint}/bin/entrypoint" ];
-            ExposedPorts = {
-              "5665" = { };
-            };
-            User = "icinga2";
-          };
+            ;
         };
         treefmt = {
           config = {
