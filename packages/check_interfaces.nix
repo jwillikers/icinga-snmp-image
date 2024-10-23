@@ -30,7 +30,7 @@ stdenv.mkDerivation rec {
     homepage = "https://github.com/NETWAYS/check_interfaces/";
     license = with licenses; [ gpl2Only ];
     platforms = platforms.unix;
-    maintainers = with maintainers; [ jwillikers ];
+    # maintainers = with maintainers; [ jwillikers ];
     mainProgram = "check_interfaces";
   };
 }

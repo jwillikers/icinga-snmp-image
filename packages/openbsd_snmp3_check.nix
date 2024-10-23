@@ -1,11 +1,8 @@
 {
   fetchFromGitHub,
   lib,
-  # nix-update-script,
-  # openbsd_snmp3_check,
   python3,
   stdenv,
-# testers,
 }:
 stdenv.mkDerivation rec {
   pname = "openbsd_snmp3_check";
@@ -27,20 +24,13 @@ stdenv.mkDerivation rec {
     runHook postInstall
   '';
 
-  # passthru = {
-  #   updateScript = nix-update-script { };
-  #   tests.version = testers.testVersion {
-  #     package = openbsd_snmp3_check;
-  #   };
-  # };
-
   meta = with lib; {
     changelog = "https://github.com/alexander-naumov/openbsd_snmp3_check/releases/tag/v${version}";
     description = "SNMP v3 check for OpenBSD systems state monitoring";
     homepage = "https://github.com/alexander-naumov/openbsd_snmp3_check";
     license = with licenses; [ bsd3 ];
     platforms = platforms.unix;
-    maintainers = with maintainers; [ jwillikers ];
+    # maintainers = with maintainers; [ jwillikers ];
     mainProgram = "openbsd_snmp3.py";
   };
 }
