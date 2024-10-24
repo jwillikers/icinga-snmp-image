@@ -5,6 +5,7 @@
       url = "github:jwillikers/nix-update-scripts";
       inputs = {
         flake-utils.follows = "flake-utils";
+        nixpkgs.follows = "nixpkgs";
         pre-commit-hooks.follows = "pre-commit-hooks";
         treefmt-nix.follows = "treefmt-nix";
       };
@@ -12,7 +13,10 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
     pre-commit-hooks = {
       url = "github:cachix/pre-commit-hooks.nix";
-      inputs.nixpkgs-stable.follows = "nixpkgs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        nixpkgs-stable.follows = "nixpkgs";
+      };
     };
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
@@ -79,7 +83,7 @@
               nil
               treefmtEval.config.build.wrapper
               # Make formatters available for IDE's.
-              (lib.attrValues treefmtEval.config.build.programs)
+              (builtins.attrValues treefmtEval.config.build.programs)
             ]
             ++ pre-commit.enabledPackages;
         };
