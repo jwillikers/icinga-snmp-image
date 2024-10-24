@@ -1,13 +1,23 @@
 {
   inputs = {
     flake-utils.url = "github:numtide/flake-utils";
-    nix-update-scripts.url = "github:jwillikers/nix-update-scripts";
+    nix-update-scripts = {
+      url = "github:jwillikers/nix-update-scripts";
+      inputs = {
+        flake-utils.follows = "flake-utils";
+        pre-commit-hooks.follows = "pre-commit-hooks";
+        treefmt-nix.follows = "treefmt-nix";
+      };
+    };
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
     pre-commit-hooks = {
       url = "github:cachix/pre-commit-hooks.nix";
+      inputs.nixpkgs-stable.follows = "nixpkgs";
+    };
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    treefmt-nix.url = "github:numtide/treefmt-nix";
   };
   outputs =
     {
