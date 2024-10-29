@@ -58,7 +58,7 @@
                 text = ''
                   set -eou pipefail
                   ${pkgs.nix-update}/bin/nix-update check_interfaces --build --flake
-                  ${pkgs.nix-update}/bin/nix-update icinga-container-entrypoint --build --flake --version master
+                  ${pkgs.nix-update}/bin/nix-update icinga-container-entrypoint --build --flake --version branch
                   ${pkgs.nix-update}/bin/nix-update manubulon-snmp-plugins --build --flake
                   ${pkgs.nix-update}/bin/nix-update openbsd_snmp3_check --build --flake
                   ${treefmtEval.config.build.wrapper}/bin/treefmt

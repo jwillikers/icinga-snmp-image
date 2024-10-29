@@ -6,11 +6,11 @@
 }:
 stdenv.mkDerivation rec {
   pname = "check_interfaces";
-  version = "1.4.3";
+  version = "1.4.4";
 
   src = fetchurl {
     url = "https://github.com/NETWAYS/check_interfaces/releases/download/v${version}/check_interfaces-${version}.tar.gz";
-    hash = "sha256-ePJ+T9/le0oz3dRtueWZuZKzBtg1n1Y+Z2Rgh1YBfXs=";
+    hash = "sha256-sQ2lee2gxyrl455tumMJ4EbKc8mYEDXl18Wik6daf5Q=";
   };
 
   buildInputs = [ net-snmp ];
