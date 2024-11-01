@@ -1,6 +1,5 @@
 {
   cacert,
-  check_interfaces,
   deterministic-uname,
   dockerTools,
   dumb-init,
@@ -10,9 +9,8 @@
   icinga2,
   icingaGroup,
   icingaUser,
-  manubulon-snmp-plugins,
   monitoring-plugins,
-  openbsd_snmp3_check,
+  pkgsUnstable,
   stdenv,
 }:
 dockerTools.buildLayeredImage {
@@ -22,7 +20,6 @@ dockerTools.buildLayeredImage {
 
   contents = [
     cacert
-    check_interfaces
     deterministic-uname
     dumb-init
     fakeNss
@@ -32,9 +29,10 @@ dockerTools.buildLayeredImage {
 
     icinga2
     icinga-container-entrypoint
-    manubulon-snmp-plugins
     monitoring-plugins
-    openbsd_snmp3_check
+    pkgsUnstable.nagiosPlugins.check_interfaces
+    pkgsUnstable.nagiosPlugins.manubulon-snmp-plugins
+    pkgsUnstable.nagiosPlugins.openbsd_snmp3_check
   ];
 
   extraCommands = ''

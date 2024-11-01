@@ -1,7 +1,7 @@
 { buildGoModule, fetchFromGitHub }:
 buildGoModule rec {
   pname = "icinga-container-entrypoint";
-  version = "master";
+  version = "0-unstable-2024-07-09";
 
   src = fetchFromGitHub {
     owner = "Icinga";

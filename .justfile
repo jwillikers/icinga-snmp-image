@@ -36,4 +36,4 @@ alias up := update
 
 update:
     nix flake update
-    # todo Update Nix hash in default.nix: vendorHash = "sha256-...";
+    nix run '.#update-packages'
