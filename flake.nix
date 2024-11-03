@@ -12,7 +12,7 @@
     };
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
     # todo Remove dependency on unstable when the required nagiosPlugins are available in the release branch.
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/master";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     pre-commit-hooks = {
       url = "github:cachix/pre-commit-hooks.nix";
       inputs = {
