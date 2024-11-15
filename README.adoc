@@ -73,7 +73,7 @@ cd icinga-snmp-image
 +
 [,sh]
 ----
-nix build '.#icinga-snmp-image'
+nix build .#icinga-snmp-image
 ----
 
 == Develop
