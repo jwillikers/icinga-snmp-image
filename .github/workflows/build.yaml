@@ -37,7 +37,7 @@ jobs:
             extra-platforms = aarch64-linux
       - uses: DeterminateSystems/magic-nix-cache-action@v8
       - name: Build the image
-        run: nix build '.#packages.${{ matrix.arch }}-linux.icinga-snmp-image'
+        run: nix build .#packages.${{ matrix.arch }}-linux.icinga-snmp-image
       - name: Export the image
         run: ln --force --symbolic --relative "$(readlink result)" "icinga-snmp-${{ matrix.arch }}-linux.tar.zst"
       - uses: actions/upload-artifact@v4

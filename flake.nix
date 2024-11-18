@@ -10,9 +10,7 @@
         treefmt-nix.follows = "treefmt-nix";
       };
     };
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
-    # todo Remove dependency on unstable when the required nagiosPlugins are available in the release branch.
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
     pre-commit-hooks = {
       url = "github:cachix/pre-commit-hooks.nix";
       inputs = {
@@ -31,7 +29,6 @@
       self,
       nix-update-scripts,
       nixpkgs,
-      nixpkgs-unstable,
       flake-utils,
       pre-commit-hooks,
       treefmt-nix,
@@ -41,42 +38,27 @@
       let
         overlays = import ./overlays { inherit icingaGroup icingaUser; };
         pkgs = import nixpkgs { inherit system overlays; };
-        pkgsUnstable = import nixpkgs-unstable { inherit system overlays; };
         icingaGroup = "5665";
         icingaUser = "5665";
-        packages = import ./packages {
-          inherit
-            icingaGroup
-            icingaUser
-            pkgs
-            pkgsUnstable
-            ;
-        };
+        packages = import ./packages { inherit icingaGroup icingaUser pkgs; };
         pre-commit = pre-commit-hooks.lib.${system}.run (
-          import ./pre-commit-hooks.nix { inherit treefmtEval; }
+          import ./pre-commit-hooks.nix { inherit pkgs treefmtEval; }
         );
         treefmtEval = treefmt-nix.lib.evalModule pkgs ./treefmt.nix;
       in
       with pkgs;
       {
         apps = {
-          inherit (nix-update-scripts.apps.${system}) update-nix-direnv;
-          inherit (nix-update-scripts.apps.${system}) update-nixos-release;
-          update-packages =
-            let
-              script = pkgs.writeShellApplication {
-                name = "update-packages";
-                text = ''
-                  set -eou pipefail
-                  ${pkgs.nix-update}/bin/nix-update icinga-container-entrypoint --build --flake --version branch
-                  ${treefmtEval.config.build.wrapper}/bin/treefmt
-                '';
-              };
-            in
-            {
-              type = "app";
-              program = "${script}/bin/update-packages";
-            };
+          inherit (nix-update-scripts.apps.${system}) update-nix-direnv update-nixos-release;
+          update-packages = {
+            type = "app";
+            program = builtins.toString (
+              pkgs.writers.writeNu "update-packages" ''
+                ^${pkgs.lib.getExe pkgs.nix-update} icinga-container-entrypoint --build --flake --version branch
+                ^${pkgs.lib.getExe treefmtEval.config.build.wrapper}
+              ''
+            );
+          };
         };
         devShells.default = mkShell {
           inherit (pre-commit) shellHook;
@@ -88,7 +70,6 @@
               dive
               just
               lychee
-              nil
               treefmtEval.config.build.wrapper
               # Make formatters available for IDE's.
               (builtins.attrValues treefmtEval.config.build.programs)

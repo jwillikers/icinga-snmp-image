@@ -3,8 +3,7 @@ default: build
 alias b := build
 
 build attribute="icinga-snmp-image":
-    #!/bin/bash -eux
-    nix build '.#{{ attribute }}'
+    nix build ".#{{ attribute }}"
 
 alias ch := check
 
@@ -36,7 +35,7 @@ alias u := update
 alias up := update
 
 update:
-    nix run '.#update-nix-direnv'
-    nix run '.#update-nixos-release'
+    nix run ".#update-nix-direnv"
+    nix run ".#update-nixos-release"
     nix flake update
-    nix run '.#update-packages'
+    nix run ".#update-packages"
