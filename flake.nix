@@ -42,7 +42,7 @@
         icingaUser = "5665";
         packages = import ./packages { inherit icingaGroup icingaUser pkgs; };
         pre-commit = pre-commit-hooks.lib.${system}.run (
-          import ./pre-commit-hooks.nix { inherit treefmtEval; }
+          import ./pre-commit-hooks.nix { inherit pkgs treefmtEval; }
         );
         treefmtEval = treefmt-nix.lib.evalModule pkgs ./treefmt.nix;
       in
