@@ -88,7 +88,6 @@
               dive
               just
               lychee
-              nil
               treefmtEval.config.build.wrapper
               # Make formatters available for IDE's.
               (builtins.attrValues treefmtEval.config.build.programs)
