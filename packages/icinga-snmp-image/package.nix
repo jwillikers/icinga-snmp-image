@@ -10,7 +10,7 @@
   icingaGroup,
   icingaUser,
   monitoring-plugins,
-  pkgsUnstable,
+  nagiosPlugins,
   stdenv,
 }:
 dockerTools.buildLayeredImage {
@@ -30,9 +30,9 @@ dockerTools.buildLayeredImage {
     icinga2
     icinga-container-entrypoint
     monitoring-plugins
-    pkgsUnstable.nagiosPlugins.check_interfaces
-    pkgsUnstable.nagiosPlugins.manubulon-snmp-plugins
-    pkgsUnstable.nagiosPlugins.openbsd_snmp3_check
+    nagiosPlugins.check_interfaces
+    nagiosPlugins.manubulon-snmp-plugins
+    nagiosPlugins.openbsd_snmp3_check
   ];
 
   extraCommands = ''
