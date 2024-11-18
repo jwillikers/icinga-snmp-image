@@ -1,13 +1,13 @@
 { buildGoModule, fetchFromGitHub }:
 buildGoModule rec {
   pname = "icinga-container-entrypoint";
-  version = "0-unstable-2024-07-09";
+  version = "0-unstable-2024-11-11";
 
   src = fetchFromGitHub {
     owner = "Icinga";
     repo = "docker-icinga2";
-    rev = "031401768d8fbaa1f42081a774d70d9f5d172a3c";
-    sha256 = "sha256-bFEbTWDyJnzBn0T8vfEqlMumZi0gVpYj3jBzUs8gGJo=";
+    rev = "02fcac42eedb6f16ea5996f5044b9d8c787a07b6";
+    sha256 = "sha256-cCilAHkxIsz2Tax+FOWxNkbjxtQUEFvZvgw2put/wVs=";
   };
   patches = [
     # Without this, we get error messages like:
