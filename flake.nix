@@ -62,21 +62,16 @@
         apps = {
           inherit (nix-update-scripts.apps.${system}) update-nix-direnv;
           inherit (nix-update-scripts.apps.${system}) update-nixos-release;
-          update-packages =
-            let
-              script = pkgs.writeShellApplication {
-                name = "update-packages";
-                text = ''
-                  set -eou pipefail
-                  ${pkgs.nix-update}/bin/nix-update icinga-container-entrypoint --build --flake --version branch
-                  ${treefmtEval.config.build.wrapper}/bin/treefmt
-                '';
-              };
-            in
-            {
-              type = "app";
-              program = "${script}/bin/update-packages";
-            };
+          update-packages = {
+            type = "app";
+            program = builtins.toString (
+              pkgs.writers.writeNu "update-packages" ''
+                ${pkgs.lib.getExe pkgs.nix-update} icinga-container-entrypoint --build --flake --version branch
+                # todo pkgs.lib.getExe?
+                ${treefmtEval.config.build.wrapper}/bin/treefmt
+              ''
+            );
+          };
         };
         devShells.default = mkShell {
           inherit (pre-commit) shellHook;
