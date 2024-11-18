@@ -55,9 +55,8 @@
             type = "app";
             program = builtins.toString (
               pkgs.writers.writeNu "update-packages" ''
-                ${pkgs.lib.getExe pkgs.nix-update} icinga-container-entrypoint --build --flake --version branch
-                # todo pkgs.lib.getExe?
-                ${treefmtEval.config.build.wrapper}/bin/treefmt
+                ^${pkgs.lib.getExe pkgs.nix-update} icinga-container-entrypoint --build --flake --version branch
+                ^${pkgs.lib.getExe treefmtEval.config.build.wrapper}
               ''
             );
           };
