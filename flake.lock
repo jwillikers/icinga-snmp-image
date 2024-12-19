@@ -71,11 +71,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1734527700,
-        "narHash": "sha256-EZB+lqpwoa5fx+zlIHucE0rnFBZR8E92QEPeqCNHlX4=",
+        "lastModified": 1734613724,
+        "narHash": "sha256-ruOPYwc4iAPoe4sdbe/jOvxtKfh/G3n7DSFgSKIpAeY=",
         "owner": "jwillikers",
         "repo": "nix-update-scripts",
-        "rev": "8a1cc3ddfcedd7f396768de64e0074e1b12e636b",
+        "rev": "9b92f2d4a108cee96273eff840875034c6e0293a",
         "type": "github"
       },
       "original": {

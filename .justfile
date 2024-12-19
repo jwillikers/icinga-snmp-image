@@ -20,6 +20,7 @@ format:
     treefmt
 
 alias r := run
+
 run attribute="icinga-snmp-image": (build attribute)
     podman image load --input result
     podman run \
