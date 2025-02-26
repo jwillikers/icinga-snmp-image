@@ -2,6 +2,7 @@
 accept = [429]
 
 cache = true
+exclude = ['^https://www.gnu.org', '^http://www.gnu.org']
 exclude_path = [
   ".cache/",
   ".direnv/",
