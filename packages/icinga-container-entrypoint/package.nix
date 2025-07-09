@@ -1,17 +1,17 @@
 { buildGoModule, fetchFromGitHub }:
 buildGoModule rec {
   pname = "icinga-container-entrypoint";
-  version = "0-unstable-2025-04-15";
+  version = "0-unstable-2025-06-17";
 
   src = fetchFromGitHub {
     owner = "Icinga";
     repo = "docker-icinga2";
-    rev = "d337394bd6b13a3539418980f0c7d5b1c0b0a6c8";
-    sha256 = "sha256-B+M+kUAnrN5Lm7yKbaksk85JtO9q8W/BpRK1AjxuEY4=";
+    rev = "d8ba52f6a8820050313c60ed4a72d8ea17a22b9c";
+    sha256 = "sha256-/hwEYtADT85jsyPSG4JKXKulkDqTzv7aAVb/FOTeE+k=";
   };
   sourceRoot = "${src.name}/entrypoint";
 
-  vendorHash = "sha256-f88WzC4foW+zLWYyk7qdwS+rC7m/iG0v4Z0i2hczHq8=";
+  vendorHash = "sha256-G7C+Pb8h+W6lph4YPWV3Drawj8u87mKML/p4Oan3XIc=";
 
   meta = {
     mainProgram = "entrypoint";
