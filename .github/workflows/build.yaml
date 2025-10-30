@@ -39,7 +39,7 @@ jobs:
         run: nix build .#packages.${{ matrix.arch }}-linux.icinga-snmp-image
       - name: Export the image
         run: ln --force --symbolic --relative "$(readlink result)" "icinga-snmp-${{ matrix.arch }}-linux.tar.zst"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: icinga-snmp-${{ matrix.arch }}-linux
           path: icinga-snmp-${{ matrix.arch }}-linux.tar.zst
