@@ -54,7 +54,7 @@ jobs:
         run: buildah manifest create icinga-snmp:latest
 
       # aarch64
-      - uses: actions/download-artifact@v5
+      - uses: actions/download-artifact@v6
         with:
           name: icinga-snmp-aarch64-linux
 
@@ -66,7 +66,7 @@ jobs:
         run: buildah manifest add icinga-snmp:latest localhost/icinga-snmp:aarch64-linux
 
       # x86_64
-      - uses: actions/download-artifact@v5
+      - uses: actions/download-artifact@v6
         with:
           name: icinga-snmp-x86_64-linux
 
