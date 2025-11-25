@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: DeterminateSystems/nix-installer-action@v20
+      - uses: DeterminateSystems/nix-installer-action@v21
       - name: Run treefmt
         # todo Use when updated to NixOS 24.11.
         # run: nix develop --command treefmt --ci
