@@ -68,9 +68,9 @@
               just
               lychee
               treefmtEval.config.build.wrapper
-              # Make formatters available for IDE's.
-              (builtins.attrValues treefmtEval.config.build.programs)
             ]
+            # Make formatters available for IDE's.
+            ++ builtins.attrValues treefmtEval.config.build.programs
             ++ pre-commit.enabledPackages;
         };
         formatter = treefmtEval.config.build.wrapper;
