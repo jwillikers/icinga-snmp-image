@@ -46,7 +46,6 @@ dockerTools.buildLayeredImage {
     set -eou pipefail
 
     # Create the /data and /data-init directories.
-    # install --group ${icingaGroup} --owner ${icingaUser} --directory data
     install --group ${icingaGroup} --owner ${icingaUser} --directory data
     install --group ${icingaGroup} --owner ${icingaUser} --directory data-init
     install --group ${icingaGroup} --owner ${icingaUser} --directory data-init/etc
