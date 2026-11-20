@@ -10,7 +10,7 @@
         treefmt-nix.follows = "treefmt-nix";
       };
     };
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     pre-commit-hooks = {
       url = "github:cachix/pre-commit-hooks.nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -68,9 +68,9 @@
               just
               lychee
               treefmtEval.config.build.wrapper
-              # Make formatters available for IDE's.
-              (builtins.attrValues treefmtEval.config.build.programs)
             ]
+            # Make formatters available for IDE's.
+            ++ builtins.attrValues treefmtEval.config.build.programs
             ++ pre-commit.enabledPackages;
         };
         formatter = treefmtEval.config.build.wrapper;
