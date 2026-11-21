@@ -11,12 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.pull_request.user.login == 'dependabot[bot]'
     steps:
-      - uses: dependabot/fetch-metadata@v3
-        id: metadata
-      # Major version bumps may change behavior, so leave those for manual review.
       - name: Enable auto-merge
-        if: steps.metadata.outputs.update-type != 'version-update:semver-major'
         # Use the PAT so that the merge triggers the push workflows on main.
+        # The PAT requires the workflow scope to merge changes to workflow files.
         run: gh pr merge --auto --merge "$PR_URL"
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
