@@ -1,11 +1,6 @@
 name: Build
 "on":
   pull_request:
-    paths:
-      - '**.nix'
-      - '**.patch'
-      - .github/workflows/build.yaml
-      - flake.lock
   push:
     branches:
       - main
@@ -18,6 +13,10 @@ name: Build
     # Run at 04:10 on Sunday
     - cron: "10 4 * * 0"
 
+permissions:
+  contents: read
+  pull-requests: read
+
 jobs:
   build:
     name: Build
@@ -28,18 +27,39 @@ jobs:
           - aarch64
           - x86_64
     steps:
+      # Always run this job so that required status checks report on every PR,
+      # but only do the work when relevant files changed.
+      - uses: dorny/paths-filter@v4
+        id: filter
+        if: github.event_name == 'pull_request'
+        with:
+          filters: |
+            relevant:
+              - '**.nix'
+              - '**.patch'
+              - .github/workflows/build.yaml
+              - flake.lock
+      - name: Determine whether to run
+        id: gate
+        run: echo "run=${{ github.event_name != 'pull_request' || steps.filter.outputs.relevant == 'true' }}" >> "$GITHUB_OUTPUT"
       - uses: actions/checkout@v7
+        if: steps.gate.outputs.run == 'true'
       - name: Set up QEMU
+        if: steps.gate.outputs.run == 'true'
         uses: docker/setup-qemu-action@v4
       - uses: DeterminateSystems/nix-installer-action@v23
+        if: steps.gate.outputs.run == 'true'
         with:
           extra-conf: |
             extra-platforms = aarch64-linux
       - name: Build the image
+        if: steps.gate.outputs.run == 'true'
         run: nix build .#packages.${{ matrix.arch }}-linux.icinga-snmp-image
       - name: Export the image
+        if: steps.gate.outputs.run == 'true'
         run: ln --force --symbolic --relative "$(readlink result)" "icinga-snmp-${{ matrix.arch }}-linux.tar.zst"
       - uses: actions/upload-artifact@v7
+        if: steps.gate.outputs.run == 'true'
         with:
           name: icinga-snmp-${{ matrix.arch }}-linux
           path: icinga-snmp-${{ matrix.arch }}-linux.tar.zst
